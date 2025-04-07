@@ -1,6 +1,23 @@
-﻿var game = new Game();
+﻿// Starta ett spelet.
+//
+// Sätt parametrar.
+//
+// skapa mapen för spelet.
+//
+// Läss keys för rörelse av spelare.
+//
+// Gör så att spelarna kan inte gå genom andra spelare eller vägar.
+//
+// Gör så att poäng kan tas upp.
+//
+// Gör så att spelet lopas så efter spelaren har rört sig rörelsen skrivs ut.
+//
+// Gör så att spelet slutar efter en av spelarna har tagit upp mer en hälften av poängen.
+
+var game = new Game();
 game.CreateMap();
 game.IsRunning();
+Console.ReadKey();
 
 public class Game
 {
@@ -21,16 +38,16 @@ public class Game
 
     const char wall = '#';
     const char blank = ' ';
-    const char point_mark = '.';
+    const char pointMark = '.';
 
     List<Point> points = new List<Point>();
-    const int number_of_points = 10;
-    public int value_of_all_points;
+    public int numberOfPoints = 10;
+    public int valueOfAllPoints;
 
     Player player1;
     Player player2;
-    const char player1_mark = 'X';
-    const char player2_mark = 'O';
+    const char player1Mark = 'X';
+    const char player2Mark = 'O';
 
     public int steg1;
     public int steg2;
@@ -57,10 +74,10 @@ public class Game
             }
         }
 
-        for (int i = 0; i < number_of_points; i++)
+        for (int i = 0; i < numberOfPoints; i++)
         {
             points.Add(new Point());
-            value_of_all_points += points[i].Value;
+            valueOfAllPoints += points[i].value;
 
             while (true)
             {
@@ -72,7 +89,7 @@ public class Game
                 }
             }
 
-            map[points[i].X, points[i].Y] = point_mark;
+            map[points[i].X, points[i].Y] = pointMark;
         }
 
         Console.Clear();
@@ -85,16 +102,16 @@ public class Game
         Console.SetCursorPosition(0, 1);
         Console.WriteLine("Steps: " + steg1);
         Console.SetCursorPosition(0, 2);
-        Console.WriteLine("Points: " + player1.Score + "/" + value_of_all_points);
+        Console.WriteLine("Points: " + player1.Score + "/" + valueOfAllPoints);
         Console.SetCursorPosition(20, 0);
         Console.WriteLine("Player: " + player2.name);
         Console.SetCursorPosition(20, 1);
         Console.WriteLine("Steps: " + steg2);
         Console.SetCursorPosition(20, 2);
-        Console.WriteLine("Points: " + player2.Score + "/" + value_of_all_points);
+        Console.WriteLine("Points: " + player2.Score + "/" + valueOfAllPoints);
 
-        map[player1.X, player1.Y] = player1_mark;
-        map[player2.X, player2.X] = player2_mark;
+        map[player1.X, player1.Y] = player1Mark;
+        map[player2.X, player2.X] = player2Mark;
 
         for (int y = 0; y < height; y++)
         {
@@ -107,17 +124,17 @@ public class Game
         map[player1.X, player1.Y] = blank;
         map[player2.X, player2.X] = blank;
 
-        if (player1.Score > value_of_all_points / 2)
+        if (player1.Score > valueOfAllPoints / 2)
         {
             Console.WriteLine(player1.name + " win!");
             running = false;
         }
-        if (player2.Score > value_of_all_points / 2)
+        if (player2.Score > valueOfAllPoints / 2)
         {
             Console.WriteLine(player2.name + " win!");
             running = false;
         }
-        if (player1.Score == value_of_all_points / 2 && player2.Score == value_of_all_points / 2)
+        if (player1.Score == valueOfAllPoints / 2 && player2.Score == valueOfAllPoints / 2)
         {
             Console.WriteLine("Draw!");
             running = false;
@@ -131,13 +148,13 @@ public class Game
             case wall:
                 Console.ForegroundColor = ConsoleColor.White;
                 break;
-            case point_mark:
+            case pointMark:
                 Console.BackgroundColor = ConsoleColor.Yellow;
                 break;
-            case player1_mark:
+            case player1Mark:
                 Console.BackgroundColor = ConsoleColor.Blue;
                 break;
-            case player2_mark:
+            case player2Mark:
                 Console.BackgroundColor = ConsoleColor.Red;
                 break;
             default:
@@ -153,56 +170,56 @@ public class Game
         switch (movment.Key)
         {
             case ConsoleKey.W:
-                if (IsWall_or_IsPlayer(player1.X, player1.Y - 1) == false)
+                if (IsWallSlashIsPlayer(player1.X, player1.Y - 1) == false)
                 {
                     player1.Y--;
                     steg1++;
                 }
                 break;
             case ConsoleKey.A:
-                if (IsWall_or_IsPlayer(player1.X - 1, player1.Y) == false)
+                if (IsWallSlashIsPlayer(player1.X - 1, player1.Y) == false)
                 {
                     player1.X--;
                     steg1++;
                 }
                 break;
             case ConsoleKey.D:
-                if (IsWall_or_IsPlayer(player1.X + 1, player1.Y) == false)
+                if (IsWallSlashIsPlayer(player1.X + 1, player1.Y) == false)
                 {
                     player1.X++;
                     steg1++;
                 }
                 break;
             case ConsoleKey.S:
-                if (IsWall_or_IsPlayer(player1.X, player1.Y + 1) == false)
+                if (IsWallSlashIsPlayer(player1.X, player1.Y + 1) == false)
                 {
                     player1.Y++;
                     steg1++;
                 }
                 break;
             case ConsoleKey.UpArrow:
-                if (IsWall_or_IsPlayer(player2.X, player2.Y - 1) == false)
+                if (IsWallSlashIsPlayer(player2.X, player2.Y - 1) == false)
                 {
                     player2.Y--;
                     steg1++;
                 }
                 break;
             case ConsoleKey.LeftArrow:
-                if (IsWall_or_IsPlayer(player2.X - 1, player2.Y) == false)
+                if (IsWallSlashIsPlayer(player2.X - 1, player2.Y) == false)
                 {
                     player2.X--;
                     steg1++;
                 }
                 break;
             case ConsoleKey.RightArrow:
-                if (IsWall_or_IsPlayer(player2.X + 1, player2.Y) == false)
+                if (IsWallSlashIsPlayer(player2.X + 1, player2.Y) == false)
                 {
                     player2.X++;
                     steg1++;
                 }
                 break;
             case ConsoleKey.DownArrow:
-                if (IsWall_or_IsPlayer(player2.X, player2.Y + 1) == false)
+                if (IsWallSlashIsPlayer(player2.X, player2.Y + 1) == false)
                 {
                     player2.Y++;
                     steg1++;
@@ -210,21 +227,21 @@ public class Game
                 break;
         }
 
-        if (map[player1.X, player1.Y] == point_mark)
+        if (map[player1.X, player1.Y] == pointMark)
         {
-            Point stone = PickPoint(player1.X, player1.Y);
-            player1.Points.Add(stone);
+            Point point = PickPoint(player1.X, player1.Y);
+            player1.Points.Add(point);
         }
-        else if (map[player2.X, player2.Y] == point_mark)
+        else if (map[player2.X, player2.Y] == pointMark)
         {
-            Point stone = PickPoint(player2.X, player2.Y);
-            player2.Points.Add(stone);
+            Point point = PickPoint(player2.X, player2.Y);
+            player2.Points.Add(point);
         }
 
 
     }
 
-    public bool IsWall_or_IsPlayer(int x, int y)
+    public bool IsWallSlashIsPlayer(int x, int y)
     {
         switch (map[x, y])
         {
@@ -254,7 +271,7 @@ public class Game
 
 public class Point
 {
-    public int Value = Random.Shared.Next(1, 11);
+    public int value = Random.Shared.Next(1, 11);
     public int X;
     public int Y;
 }
@@ -277,12 +294,12 @@ public class Player
     {
         get
         {
-            int score;
-
+            int score = 0;
+            
             foreach (var point in Points)
             {
-                score += point.Value;
-            }
+                score += point.value;
+            }        
             return score;
         }
     }
